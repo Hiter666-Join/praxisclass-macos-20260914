@@ -1,0 +1,1423 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+/* Workbench chat (agent workbench surface): scoped .wbchat tokens + prose skin. */
+@import '../components/workbench/chat/workbench-chat.css';
+
+/* Streamdown (AI sidebar markdown) styles itself with Tailwind utilities —
+   Tailwind must scan its dist so those classes get generated. */
+@source '../node_modules/streamdown/dist/*.js';
+@source '../node_modules/@streamdown/code/dist/*.js';
+@source "../node_modules/@praxis/renderer/dist/**/*.{js,cjs}";
+/* slide-renderer-demo is gitignored (local sandbox), which makes Tailwind v4's
+   auto source detection skip it. Re-include it explicitly so the demo's
+   Tailwind classes (e.g. bg-violet-600) still get generated. */
+@source "./slide-renderer-demo/**/*.{tsx,ts,jsx,js}";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  /* Inter is loaded from @fontsource in app/layout.tsx, which declares one
+     @font-face per unicode subset. Previously this came from next/font wrapping
+     a single latin-only file, which left Cyrillic and Vietnamese text to OS
+     fallback fonts. */
+  --font-sans:
+    'Inter Variable', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', ui-sans-serif, system-ui,
+    sans-serif;
+  --background: oklch(0.974 0.009 80);
+  --foreground: oklch(0.25 0.017 270);
+  --card: oklch(0.992 0.004 80);
+  --card-foreground: oklch(0.25 0.017 270);
+  --popover: oklch(0.992 0.004 80);
+  --popover-foreground: oklch(0.25 0.017 270);
+  /* Brand accent — mirrored in lib/brand/brand-config.ts DEFAULT_BRAND.primaryColor (light/dark); change both. */
+  --primary: #722ed1;
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.945 0.01 80);
+  --secondary-foreground: oklch(0.31 0.018 270);
+  --muted: oklch(0.948 0.008 80);
+  --muted-foreground: oklch(0.5 0.016 270);
+  --accent: oklch(0.945 0.012 295);
+  --accent-foreground: oklch(0.31 0.018 270);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.9 0.009 80);
+  --input: oklch(0.86 0.012 80);
+  --ring: var(--primary);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.955 0.009 80);
+  --sidebar-foreground: oklch(0.34 0.018 270);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.926 0.009 80);
+  --sidebar-accent-foreground: oklch(0.25 0.017 270);
+  --sidebar-border: oklch(0.9 0.009 80);
+  --sidebar-ring: var(--primary);
+}
+
+.dark {
+  --background: oklch(0.18 0.02 210);
+  --foreground: oklch(0.93 0.01 200);
+  --card: oklch(0.23 0.02 210);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.23 0.02 210);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: #8b47ea;
+  --primary-foreground: oklch(0.985 0.005 295);
+  --secondary: oklch(0.28 0.02 210);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.28 0.02 210);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.34 0.02 210);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.23 0.02 210);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #8b47ea;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.28 0.02 210);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Shared light palette for the home, teaching/learning workspace and settings.
+   Resolve it at the root on platform routes so portalled menus inherit it too. */
+:root:has([data-home-layout='focus'], .ws-root) {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root:not(.dark):has(
+    [data-home-layout='focus'],
+    .ws-root,
+    [data-platform-viewport],
+    [data-classroom-viewport]
+  ),
+:root:not(.dark) .workspace-palette {
+  --background: #fafaf8;
+  --foreground: #292b32;
+  --card: #ffffff;
+  --card-foreground: #292b32;
+  --popover: #ffffff;
+  --popover-foreground: #292b32;
+  --secondary: #f0efed;
+  --secondary-foreground: #383a41;
+  --muted: #efeeec;
+  --muted-foreground: #707178;
+  --accent: #f0ebf7;
+  --accent-foreground: #594478;
+  --border: #e5e4e1;
+  --input: #e1dfdc;
+  --ring: #b9a2d7;
+  --sidebar: #f5f4f2;
+  --sidebar-foreground: #383a41;
+  --sidebar-accent: #ecebe8;
+  --sidebar-accent-foreground: #292b32;
+  --sidebar-border: #e5e4e1;
+  --sidebar-ring: #b9a2d7;
+}
+
+body:has([data-home-layout='focus']) {
+  font-synthesis: auto;
+}
+
+/* Silver glass with a small coral accent, separate from unchanged brand
+   artwork. Colour highlights actions rather than washing the whole page. */
+:root:not(.dark):not(:has(.ws-root)):has([data-platform-viewport], [data-classroom-viewport]),
+:root:not(.dark) .workspace-palette {
+  --foreground: #1f2329;
+  --card-foreground: #1f2329;
+  --popover-foreground: #1f2329;
+  --primary: #c64f3c;
+  --primary-foreground: #ffffff;
+  --accent: #fff0ed;
+  --accent-foreground: #9c382b;
+  --secondary: #f0f1f3;
+  --secondary-foreground: #41454d;
+  --muted: #f1f2f4;
+  --muted-foreground: #505966;
+  --border: #e2e4e7;
+  --input: #dcdfe3;
+  --sidebar: #f5f6f8;
+  --sidebar-accent: #e9ebee;
+  --sidebar-border: #e2e4e7;
+  --ring: #de8b7d;
+  --sidebar-primary: #c64f3c;
+  --sidebar-ring: #de8b7d;
+}
+
+.dark:not(:has(.ws-root)):has([data-platform-viewport], [data-classroom-viewport]),
+.dark .workspace-palette {
+  --background: #15171b;
+  --foreground: #e9edf5;
+  --card: #202329;
+  --card-foreground: #e9edf5;
+  --popover: #25282f;
+  --popover-foreground: #e9edf5;
+  --secondary: #292c32;
+  --secondary-foreground: #e9edf5;
+  --muted: #2b2e35;
+  --muted-foreground: #afb5c0;
+  --sidebar: #1d2026;
+  --sidebar-foreground: #e9edf5;
+  --sidebar-accent: #30343b;
+  --sidebar-accent-foreground: #e9edf5;
+  --primary: #ffa18f;
+  --primary-foreground: #301d19;
+  --accent: #4a302e;
+  --accent-foreground: #ffd4ca;
+  --ring: #da8c7d;
+  --sidebar-primary: #ffa18f;
+  --sidebar-ring: #da8c7d;
+}
+
+/* Quiet glass over the approved near-white palette. Keep the light static so
+   the material supports reading rather than becoming a moving background. */
+[data-platform-viewport],
+[data-platform-sidebar],
+[data-settings-dialog],
+[data-workspace-drawer] {
+  --control-height: 2.75rem;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.5;
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.5;
+  --workspace-glass-fill: color-mix(in srgb, var(--card) 76%, transparent);
+  --workspace-glass-line: color-mix(in srgb, var(--foreground) 14%, transparent);
+  --workspace-glass-glint: rgb(255 255 255 / 85%);
+  --workspace-glass-shadow: 0 8px 28px -18px rgb(27 29 34 / 18%);
+}
+
+/* Menus are portalled outside their form; keep their reading scale consistent. */
+:root:has([data-platform-viewport], [data-settings-dialog], [data-workspace-drawer])
+  [data-slot='select-content'] {
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.5;
+}
+
+[data-platform-viewport] {
+  background-image:
+    radial-gradient(ellipse 46rem 34rem at 35% 0%, rgb(255 255 255 / 90%), transparent 75%),
+    radial-gradient(ellipse 42rem 40rem at 100% 75%, rgb(202 207 215 / 18%), transparent 75%);
+}
+
+[data-platform-sidebar] {
+  border: 1px solid var(--workspace-glass-line, var(--sidebar-border));
+  border-radius: 1.5rem;
+  box-shadow: inset 0 1px 0 var(--workspace-glass-glint, rgb(255 255 255 / 65%));
+}
+
+[data-platform-topbar] {
+  border: 1px solid var(--workspace-glass-line);
+  border-radius: 1.25rem;
+  box-shadow: inset 0 1px 0 var(--workspace-glass-glint);
+}
+
+[data-platform-viewport] .workspace-panel {
+  border-radius: 1.5rem;
+  border-color: var(--workspace-glass-line);
+  box-shadow:
+    inset 0 1px 0 var(--workspace-glass-glint),
+    var(--workspace-glass-shadow);
+}
+
+[data-settings-dialog] {
+  border-radius: 1.5rem;
+  box-shadow:
+    inset 0 1px 0 var(--workspace-glass-glint),
+    0 24px 80px -32px rgb(27 29 34 / 25%);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  [data-platform-viewport] .workspace-panel {
+    background-color: var(--card);
+  }
+
+  [data-settings-dialog] {
+    background-color: var(--workspace-glass-fill);
+    backdrop-filter: blur(20px) saturate(115%);
+  }
+
+  [data-platform-sidebar],
+  [data-platform-topbar] {
+    background-color: color-mix(in srgb, var(--sidebar) 72%, transparent);
+    backdrop-filter: blur(24px) saturate(110%);
+  }
+
+  [data-settings-dialog] .workspace-settings-nav {
+    background-color: color-mix(in srgb, var(--sidebar) 70%, transparent);
+  }
+
+  [data-settings-dialog] .workspace-settings-providers {
+    background-color: color-mix(in srgb, var(--card) 66%, transparent);
+  }
+
+  [data-settings-dialog] .workspace-settings-panel {
+    background-color: color-mix(in srgb, var(--card) 88%, transparent);
+  }
+}
+
+.dark [data-platform-viewport],
+.dark [data-platform-sidebar],
+.dark [data-settings-dialog],
+.dark [data-workspace-drawer] {
+  --workspace-glass-fill: color-mix(in srgb, var(--card) 88%, transparent);
+  --workspace-glass-line: rgb(255 255 255 / 12%);
+  --workspace-glass-glint: rgb(255 255 255 / 8%);
+  --workspace-glass-shadow: 0 8px 28px -18px rgb(0 0 0 / 45%);
+}
+
+.dark [data-platform-viewport] {
+  background-image:
+    radial-gradient(ellipse 46rem 34rem at 35% 0%, rgb(185 193 205 / 4%), transparent 75%),
+    radial-gradient(ellipse 42rem 40rem at 100% 75%, rgb(185 193 205 / 3%), transparent 75%);
+}
+
+/* Reserve the glass material for controls and focused tools; data stays on a
+   solid reading surface. The highlights never affect text opacity. */
+[data-platform-topbar],
+[data-platform-viewport] .workspace-glass-card,
+[data-workspace-drawer] {
+  background-image:
+    linear-gradient(135deg, rgb(255 255 255 / 65%), transparent 38%, rgb(188 194 203 / 12%)),
+    radial-gradient(ellipse at 100% 0%, rgb(222 139 125 / 10%), transparent 60%);
+  box-shadow:
+    inset 0 1px 0 var(--workspace-glass-glint),
+    inset 1px 0 0 rgb(255 255 255 / 45%),
+    inset 0 -1px 0 rgb(176 181 190 / 15%),
+    0 12px 32px -22px rgb(31 35 41 / 26%);
+}
+
+[data-workspace-drawer] {
+  background-color: color-mix(in srgb, var(--card) 88%, transparent);
+  backdrop-filter: blur(28px) saturate(115%);
+  border: 1px solid var(--workspace-glass-line);
+  color: var(--foreground);
+}
+
+[data-platform-viewport] .workspace-glass-card {
+  background-color: color-mix(in srgb, var(--card) 65%, transparent);
+  backdrop-filter: blur(24px) saturate(115%);
+}
+
+[data-workspace-drawer][data-state='open'] {
+  animation: workspace-drawer-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+[data-workspace-drawer][data-state='closed'] {
+  animation: workspace-drawer-out 180ms ease-in;
+}
+
+@keyframes workspace-drawer-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes workspace-drawer-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.dark [data-platform-topbar],
+.dark [data-platform-viewport] .workspace-glass-card,
+.dark [data-workspace-drawer] {
+  background-image: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 6%),
+    transparent 55%,
+    rgb(222 139 125 / 5%)
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 14%),
+    0 12px 32px -22px rgb(0 0 0 / 40%);
+}
+
+[data-platform-viewport] button:active,
+[data-workspace-drawer] button:active {
+  filter: brightness(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-workspace-drawer][data-state] {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  [data-platform-topbar],
+  [data-platform-viewport] .workspace-glass-card,
+  [data-workspace-drawer] {
+    background-color: var(--card);
+    background-image: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Legacy classroom controls share a coral scale, while course media and
+   original avatar/brand image files retain their own colours. */
+:root:has([data-classroom-viewport]) {
+  --color-purple-50: #fff2ef;
+  --color-purple-100: #ffe3dc;
+  --color-purple-200: #fbc5b8;
+  --color-purple-300: #f0a08c;
+  --color-purple-400: #e47c65;
+  --color-purple-500: #d55e47;
+  --color-purple-600: #c64f3c;
+  --color-purple-700: #9c382b;
+  --color-purple-800: #7d3027;
+  --color-purple-900: #612b25;
+  --color-purple-950: #341b18;
+  --color-violet-50: var(--color-purple-50);
+  --color-violet-100: var(--color-purple-100);
+  --color-violet-200: var(--color-purple-200);
+  --color-violet-300: var(--color-purple-300);
+  --color-violet-400: var(--color-purple-400);
+  --color-violet-500: var(--color-purple-500);
+  --color-violet-600: var(--color-purple-600);
+  --color-violet-700: var(--color-purple-700);
+  --color-violet-800: var(--color-purple-800);
+  --color-violet-900: var(--color-purple-900);
+  --color-violet-950: var(--color-purple-950);
+}
+
+/* Learning-path tones: one pair per page type (讲解 / 实操 / 任务 / 测验).
+   Declared at the root so the workbench pane (which has no viewport
+   attribute) resolves them too; `[data-scene-tone]` selects the pair a
+   component reads through `--scene-tone` / `--scene-tone-soft`. */
+:root {
+  --classroom-tone-ink: #ffffff;
+  --classroom-tone-lecture: #5b6f8c;
+  --classroom-tone-lecture-soft: #edf1f6;
+  --classroom-tone-practice: #1f8a70;
+  --classroom-tone-practice-soft: #e3f4ee;
+  --classroom-tone-task: #b7791f;
+  --classroom-tone-task-soft: #fbf1dc;
+  --classroom-tone-quiz: #c64f3c;
+  --classroom-tone-quiz-soft: #fff0ed;
+}
+
+.dark {
+  --classroom-tone-ink: #15171b;
+  --classroom-tone-lecture: #a6b8d0;
+  --classroom-tone-lecture-soft: #2a313c;
+  --classroom-tone-practice: #62d1b4;
+  --classroom-tone-practice-soft: #1d3a33;
+  --classroom-tone-task: #f0c36a;
+  --classroom-tone-task-soft: #3e3221;
+  --classroom-tone-quiz: #ffa18f;
+  --classroom-tone-quiz-soft: #4a302e;
+}
+
+[data-scene-tone='lecture'] {
+  --scene-tone: var(--classroom-tone-lecture);
+  --scene-tone-soft: var(--classroom-tone-lecture-soft);
+}
+
+[data-scene-tone='practice'] {
+  --scene-tone: var(--classroom-tone-practice);
+  --scene-tone-soft: var(--classroom-tone-practice-soft);
+}
+
+[data-scene-tone='task'] {
+  --scene-tone: var(--classroom-tone-task);
+  --scene-tone-soft: var(--classroom-tone-task-soft);
+}
+
+[data-scene-tone='quiz'] {
+  --scene-tone: var(--classroom-tone-quiz);
+  --scene-tone-soft: var(--classroom-tone-quiz-soft);
+}
+
+/* The classroom shares the platform's quiet glass: a static highlight behind
+   the workbench, a translucent header over it. */
+[data-classroom-viewport] {
+  background-image:
+    radial-gradient(ellipse 46rem 30rem at 30% 0%, rgb(255 255 255 / 85%), transparent 75%),
+    radial-gradient(ellipse 40rem 36rem at 100% 80%, rgb(202 207 215 / 16%), transparent 75%);
+}
+
+.dark [data-classroom-viewport] {
+  background-image:
+    radial-gradient(ellipse 46rem 30rem at 30% 0%, rgb(185 193 205 / 4%), transparent 75%),
+    radial-gradient(ellipse 40rem 36rem at 100% 80%, rgb(185 193 205 / 3%), transparent 75%);
+}
+
+[data-classroom-header] {
+  background-color: color-mix(in srgb, var(--card) 84%, transparent);
+  backdrop-filter: blur(18px) saturate(110%);
+}
+
+[data-classroom-roundtable] {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 65%),
+    0 5px 18px -12px rgb(31 35 41 / 18%);
+}
+
+/* Shared composer materials for the ordinary home and Pro workspace. */
+[data-home-layout='focus'],
+.ws-root {
+  --focus-composer-radius: 1.75rem;
+  --focus-composer-shadow: 0 10px 35px -20px rgb(44 35 58 / 20%), 0 2px 7px -3px rgb(44 35 58 / 5%);
+  --focus-composer-shadow-focus: 0 8px 32px -20px rgb(90 60 130 / 25%);
+}
+
+.home-focus-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 3rem;
+  overflow-x: clip;
+}
+.home-focus-workspace {
+  margin-left: 4rem;
+  flex: 1;
+  gap: 0;
+}
+.home-focus-rail {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 40;
+  display: flex;
+  width: 4rem;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid var(--border);
+  background: var(--background);
+  padding: 1rem 0.5rem;
+}
+.home-focus-rail-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  color: var(--muted-foreground);
+  transition:
+    background-color 0.18s,
+    color 0.18s;
+}
+.home-focus-rail-button:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+.home-focus-rail-button.is-active {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+.home-focus-header {
+  position: relative;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: 'brand views preferences';
+  align-items: center;
+  min-height: 5rem;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+}
+.home-focus-brand {
+  grid-area: brand;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.home-focus-preferences {
+  grid-area: preferences;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.25rem;
+}
+.home-focus-mobile-settings {
+  display: none;
+}
+.home-focus-mobile-home {
+  grid-area: home;
+  display: none;
+}
+.home-focus-view-switch {
+  grid-area: views;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 70%, transparent);
+  padding: 0.2rem;
+}
+.home-focus-view-switch [data-slot='tabs-trigger'] {
+  min-width: 6.75rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  padding-inline: 1.1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.home-focus-view-switch [data-state='active'] {
+  border-color: var(--border);
+  background: var(--card);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 5%);
+}
+.home-focus-main {
+  flex: 1;
+  padding: 0 1.5rem;
+}
+.home-focus-hero {
+  width: 100%;
+  max-width: 840px;
+  margin: clamp(4rem, 22vh, 13.75rem) auto 4rem;
+}
+.home-focus-title {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2rem;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+.home-focus-input-card {
+  position: relative;
+  z-index: 2;
+  border: 1px solid var(--border);
+  border-radius: var(--focus-composer-radius);
+  background: var(--card);
+  box-shadow: var(--focus-composer-shadow);
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+}
+.home-focus-input-card:focus-within {
+  border-color: var(--ring);
+  box-shadow: var(--focus-composer-shadow-focus);
+}
+.home-focus-textarea {
+  display: block;
+  width: 100%;
+  min-height: 7rem;
+  max-height: 18.75rem;
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 1.35rem 1.4rem 0.6rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--foreground);
+}
+.home-focus-textarea::placeholder {
+  color: color-mix(in srgb, var(--muted-foreground) 78%, transparent);
+}
+.home-focus-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.25rem 0.8rem 0.85rem 1rem;
+}
+.home-focus-material {
+  min-width: 0;
+  max-width: 38%;
+}
+.home-focus-material > button {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  max-width: 100%;
+  border-color: transparent;
+  padding-inline: 0.65rem;
+  background: transparent;
+  color: var(--muted-foreground);
+}
+.home-focus-material > button:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+.home-focus-material > button > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+.home-focus-material > button > span {
+  min-width: 0;
+}
+.home-focus-send {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  transition:
+    opacity 0.18s,
+    transform 0.18s;
+}
+.home-focus-send:hover:not(:disabled) {
+  opacity: 0.85;
+}
+.home-focus-send:active:not(:disabled) {
+  transform: scale(0.96);
+}
+.home-focus-send:disabled {
+  background: color-mix(in srgb, var(--primary) 24%, var(--card));
+  color: var(--card);
+  cursor: not-allowed;
+}
+.home-focus-dock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin: -0.65rem 1rem 0;
+  padding: 1rem 0.6rem 0.5rem;
+  border-radius: 0 0 1.15rem 1.15rem;
+  background: color-mix(in srgb, var(--muted) 60%, transparent);
+}
+.home-focus-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  transition:
+    color 0.18s,
+    background-color 0.18s;
+}
+.home-focus-tool:hover,
+.home-focus-tool[data-state='open'] {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+}
+.home-focus-context {
+  margin-left: auto;
+  width: 19rem;
+  max-width: 100%;
+}
+.home-focus-context > div {
+  width: 100%;
+}
+.home-focus-context > div > button {
+  border-color: transparent;
+  background: transparent;
+}
+.home-focus-context > div > button:hover {
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+}
+.home-focus-suggestions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 2rem;
+}
+.home-focus-suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  background: color-mix(in srgb, var(--card) 65%, transparent);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  transition:
+    color 0.18s,
+    border-color 0.18s,
+    background-color 0.18s;
+}
+.home-focus-suggestion > svg {
+  color: var(--accent-foreground);
+  opacity: 0.85;
+}
+.home-focus-suggestion:hover {
+  color: var(--foreground);
+  border-color: var(--ring);
+  background: var(--card);
+}
+.home-focus-library {
+  max-width: 1060px;
+  margin: 3rem auto 4rem;
+}
+.home-focus-footer {
+  margin-left: 4rem;
+  padding: 1rem 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
+}
+.home-focus-page button:focus-visible,
+.home-focus-page a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .home-focus-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'brand preferences' 'views views';
+  }
+  .home-focus-view-switch {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 639px) {
+  .home-focus-rail {
+    display: none;
+  }
+  .home-focus-workspace,
+  .home-focus-footer {
+    margin-left: 0;
+  }
+  .home-focus-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'brand preferences' 'home views';
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+  .home-focus-view-switch {
+    justify-self: end;
+  }
+  .home-focus-view-switch [data-slot='tabs-trigger'] {
+    min-width: 4.5rem;
+    padding-inline: 0.65rem;
+  }
+  .home-focus-mobile-home {
+    display: flex;
+    justify-self: start;
+  }
+  .home-focus-mobile-home [data-slot='button'] {
+    padding-inline: 0.75rem;
+    font-size: 0.75rem;
+  }
+  .home-focus-preferences {
+    gap: 0;
+  }
+  .home-focus-mobile-settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    color: var(--muted-foreground);
+  }
+  .home-focus-main {
+    padding-inline: 1rem;
+  }
+  .home-focus-hero {
+    margin-top: 3.5rem;
+    margin-bottom: 3rem;
+  }
+  .home-focus-title {
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
+    margin-bottom: 1.5rem;
+  }
+  .home-focus-textarea {
+    min-height: 8rem;
+    padding: 1.1rem 1.1rem 0.5rem;
+    font-size: 0.9375rem;
+  }
+  .home-focus-actions {
+    gap: 0.25rem;
+    padding-inline: 0.6rem;
+  }
+  .home-focus-dock {
+    margin-inline: 0.65rem;
+    padding-inline: 0.4rem;
+  }
+  .home-focus-tool {
+    font-size: 0.75rem;
+    padding-inline: 0.55rem;
+  }
+  .home-focus-context {
+    width: 100%;
+    margin-left: 0;
+  }
+  .home-focus-context > div > button {
+    padding-inline: 0.6rem;
+  }
+  .home-focus-suggestions {
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .home-focus-suggestion {
+    min-height: 2.5rem;
+  }
+  .home-focus-library {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 379px) {
+  .home-focus-header {
+    grid-template-areas: 'brand home' 'preferences preferences' 'views views';
+  }
+  .home-focus-mobile-home {
+    justify-self: end;
+  }
+  .home-focus-preferences,
+  .home-focus-view-switch {
+    justify-self: center;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    /* Always render the vertical scrollbar so layout doesn't horizontally
+       shift when content grows/shrinks across the viewport-height threshold
+       (e.g. expanding/collapsing recent classrooms). scrollbar-gutter:
+       stable doesn't cover every browser/config combo we see, so fall back
+       to forcing overflow-y: scroll as well. */
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-synthesis: none;
+  }
+  /* Radix modal overlays wrap with `react-remove-scroll`, which compensates
+     for the removed page scrollbar by adding right-side body spacing. This
+     app already reserves the scrollbar gutter on <html> (above), so that
+     extra compensation creates a visible horizontal layout shift when opening
+     Settings on the homepage/classroom shells. Keep Radix's modal focus and
+     interaction locking, but neutralize only the redundant gap compensation. */
+  body[data-praxis-editor='true'],
+  body[data-scroll-locked] {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@layer components {
+  .workspace-panel {
+    @apply rounded-2xl border border-border/80 bg-card;
+  }
+
+  .workspace-eyebrow {
+    @apply text-xs font-medium leading-5 text-muted-foreground;
+  }
+
+  .workspace-section-heading {
+    @apply flex flex-wrap items-center justify-between gap-3;
+  }
+
+  .workspace-section-heading h2 {
+    @apply text-lg font-semibold tracking-tight;
+  }
+
+  .workspace-text-link {
+    @apply inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring;
+  }
+}
+/* ProseMirror Editor Styles */
+.prosemirror-editor {
+  cursor: text;
+}
+
+/* The slide editor draws a text element's frame via the renderer's Operate
+   layer. The focused contenteditable must not also paint a UA focus ring on
+   top of it (the base `* { @apply outline-ring/50 }` rule gives every focused
+   element an outline). `.prosemirror-editor` is an editor-only class —
+   playback's BaseTextElement never carries it, so playback is unaffected. */
+.prosemirror-editor :focus,
+.prosemirror-editor :focus-visible {
+  outline: none;
+}
+
+/* Tailwind's preflight resets `list-style: none` and `padding: 0` on
+   `<ul>`/`<ol>`. The text element's `bulletList` / `orderedList` commands
+   genuinely wrap content in `<ul><li>` / `<ol><li>`, but without those
+   resets undone no marker would be visible. `!important` defeats any
+   layered preflight specificity we'd otherwise have to chase.
+
+   `.editable-element-text` is the PLAYBACK text wrapper, rendered for every
+   classroom/playback user — not just in the editor. So its rules MUST be
+   scoped to editor mode (`body[data-praxis-editor='true']`, set by
+   EditChromeRoot while Pro mode is mounted) to keep flag-off playback
+   rendering byte-unchanged: the editor surface isn't GA yet, so playback
+   display of editor-authored lists is deferred. Scoping keeps list markers
+   visible while editing (the user needs to see their bullets) without
+   altering how the same wrapper renders during normal playback for all
+   users. `.prosemirror-editor` is an editor-only class already (playback's
+   BaseTextElement never carries it), so it stays unscoped. */
+body[data-praxis-editor='true'] .editable-element-text ul,
+.prosemirror-editor ul {
+  list-style: disc outside !important;
+  padding-inline-start: 1.5rem !important;
+}
+body[data-praxis-editor='true'] .editable-element-text ol,
+.prosemirror-editor ol {
+  list-style: decimal outside !important;
+  padding-inline-start: 1.5rem !important;
+}
+body[data-praxis-editor='true'] .editable-element-text li,
+.prosemirror-editor li {
+  display: list-item !important;
+}
+
+/* Compact react-colorful for the slide editor's color popover. Defaults are
+   a 200×200 square with a thick separator — we squeeze it tight + round it
+   so the popover feels intentional, not stock. */
+.color-picker .react-colorful {
+  width: 100%;
+  height: auto;
+}
+.color-picker .react-colorful__saturation {
+  height: 128px;
+  border-radius: 6px;
+  border-bottom: none;
+}
+.color-picker .react-colorful__hue {
+  height: 10px;
+  margin-top: 10px;
+  border-radius: 999px;
+}
+.color-picker .react-colorful__pointer {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+
+.prosemirror-editor.format-painter {
+  cursor:
+    url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTcuMzUuMDEybC0uMDY2Ljk5OGE1LjI3MSA1LjI3MSAwIDAwLTEuMTg0LjA2IDMuOCAzLjggMCAwMC0uOTMzLjQ3MmMtLjQ0LjM1Ni0uNzgzLjgxMS0uOTk4IDEuMzI0bC4wMTgtLjAzNnY1LjEySDEuMDR2Ljk4aC0xLjA0bC0uMDAyIDQuMTVjLjE4Ny40MjYuNDYuODEuNzkxIDEuMTE3bC4xNzUuMTUyYy4yOTMuMjA4LjYxNS4zNzMuODkuNDcyLjQxLjA4Mi44My4xMTIgMS4yNDkuMDlsLjA1Ny45OTlhNi4wNjMgNi4wNjMgMCAwMS0xLjU4OC0uMTI5IDQuODM2IDQuODM2IDAgMDEtMS4yNS0uNjQ3IDQuNDYzIDQuNDYzIDAgMDEtLjgzOC0uODgzYy0uMjI0LjMzMi0uNS42NDItLjgyNC45MjdhNC4xMSA0LjExIDAgMDEtMS4zMDUuNjMzQTYuMTI2IDYuMTI2IDAgMDEwIDE1LjkwOWwuMDY4LS45OTdjLjQyNC4wMjYuODUtLjAwMSAxLjIxNy0uMDcuMzM2LS4wOTkuNjUxLS4yNTQuODk0LS40My40My0uMzguNzY1LS44NDcuOTgyLTEuMzY4bC0uMDA1LjAxNFY4LjkzSDIuMTE1di0uOThoMS4wNFYyLjg2MmEzLjc3IDMuNzcgMCAwMC0uNzc0LTEuMTY3bC0uMTY1LS4xNTZhMy4wNjQgMy4wNjQgMCAwMC0uODgtLjQ0OEE1LjA2MiA1LjA2MiAwIDAwLjA2NyAxLjAxTDAgLjAxMmE2LjE0IDYuMTQgMCAwMTEuNTkyLjExYy40NTMuMTM1Ljg3Ny4zNDUgMS4yOS42NS4zLjI2NS41NjUuNTY0Ljc4Ny44OS4yMzMtLjMzMS41Mi0uNjM0Ljg1My0uOTA0YTQuODM1IDQuODM1IDAgMDExLjMtLjY0OEE2LjE1NSA2LjE1NSAwIDAxNy4zNS4wMTJ6IiBmaWxsPSIjMEQwRDBEIi8+PHBhdGggZD0iTTE3LjM1IDE0LjVsNC41LTQuNS02LTZjLTIgMi0zIDItNS41IDIuNS40IDMuMiA0LjgzMyA2LjY2NyA3IDh6bTQuNTg4LTQuNDkzYS4zLjMgMCAwMC40MjQgMGwuNjgtLjY4YTEuNSAxLjUgMCAwMDAtMi4xMjJMMjEuNjkgNS44NTNsMi4wMjUtMS41ODNhMS42MjkgMS42MjkgMCAxMC0yLjI3OS0yLjI5NmwtMS42MDMgMi4wMjItMS4zNTctMS4zNTdhMS41IDEuNSAwIDAwLTIuMTIxIDBsLS42OC42OGEuMy4zIDAgMDAwIC40MjVsNi4yNjMgNi4yNjN6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTE1Ljg5MiAzLjk2MnMtMS4wMyAxLjIwMi0yLjQ5NCAxLjg5Yy0xLjAwNi40NzQtMi4xOC41ODYtMi43MzQuNjI3LS4yLjAxNS0uMzQ0LjIxLS4yNzYuMzk5LjI5Mi44MiAxLjExMiAyLjggMi42NTggNC4zNDYgMi4xMjYgMi4xMjcgMy42NTggMi45NjggNC4xNDIgMy4yMDMuMS4wNDguMjE0LjAzLjI5OC0uMDQyLjM4Ni0uMzI1IDEuNS0xLjI3NyAyLjIxLTEuOTg2Ljg5Mi0uODg5IDIuMTg3LTIuNDQ3IDIuMTg3LTIuNDQ3bS40NzkuMDU1YS4zLjMgMCAwMS0uNDI0IDBsLTYuMjY0LTYuMjYzYS4zLjMgMCAwMTAtLjQyNWwuNjgtLjY4YTEuNSAxLjUgMCAwMTIuMTIyIDBsMS4zNTcgMS4zNTcgMS42MDMtMi4wMjJhMS42MjkgMS42MjkgMCAxMTIuMjggMi4yOTZMMjEuNjkgNS44NTNsMS4zNTIgMS4zNTJhMS41IDEuNSAwIDAxMCAyLjEyMmwtLjY4LjY4eiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+')
+      2 5,
+    default !important;
+}
+
+/* Animation for audio visualizer */
+@keyframes wave {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+/* Breathing bars for presentation speech bubbles (parent is h-3.5 = 14px) */
+@keyframes breathing-bar-1 {
+  0%,
+  100% {
+    height: 3px;
+  }
+  50% {
+    height: 14px;
+  }
+}
+@keyframes breathing-bar-2 {
+  0%,
+  100% {
+    height: 6px;
+  }
+  50% {
+    height: 14px;
+  }
+}
+@keyframes breathing-bar-3 {
+  0%,
+  100% {
+    height: 3px;
+  }
+  50% {
+    height: 11px;
+  }
+}
+
+/* Hide scrollbar by default, show on hover */
+@utility scrollbar-hide {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* PBL v2 workspace scrollbars: scoped so the rest of PraxisClass keeps native behavior. */
+[data-pbl-workspace='true'] .pbl-v2-scrollbar,
+[data-pbl-workspace='true'] .pbl-v2-scroll-fade {
+  scrollbar-color: rgb(224 231 255 / 0.44) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-scrollbar::-webkit-scrollbar,
+[data-pbl-workspace='true'] .pbl-v2-scroll-fade::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-scrollbar::-webkit-scrollbar-track,
+[data-pbl-workspace='true'] .pbl-v2-scroll-fade::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-scrollbar::-webkit-scrollbar-corner,
+[data-pbl-workspace='true'] .pbl-v2-scroll-fade::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-scrollbar::-webkit-scrollbar-thumb,
+[data-pbl-workspace='true'] .pbl-v2-scroll-fade::-webkit-scrollbar-thumb {
+  background-color: rgb(224 231 255 / 0.38);
+  background: linear-gradient(
+      180deg,
+      rgb(224 231 255 / 0.08) 0,
+      rgb(224 231 255 / 0.26) 15%,
+      rgb(199 210 254 / 0.5) 34%,
+      rgb(165 243 252 / 0.42) 52%,
+      rgb(199 210 254 / 0.5) 70%,
+      rgb(224 231 255 / 0.26) 86%,
+      rgb(224 231 255 / 0.08) 100%
+    )
+    content-box;
+  background-clip: content-box;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  min-height: 48px;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    0 0 12px rgb(125 211 252 / 0.16);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-scrollbar::-webkit-scrollbar-thumb:hover,
+[data-pbl-workspace='true'] .pbl-v2-scroll-fade::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+      180deg,
+      rgb(224 231 255 / 0.12) 0,
+      rgb(224 231 255 / 0.34) 14%,
+      rgb(216 203 255 / 0.62) 32%,
+      rgb(165 243 252 / 0.5) 52%,
+      rgb(216 203 255 / 0.62) 70%,
+      rgb(224 231 255 / 0.34) 86%,
+      rgb(224 231 255 / 0.12) 100%
+    )
+    content-box;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown {
+  color: rgb(51 65 85);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown :where(p, li, blockquote) {
+  color: rgb(51 65 85);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown :where(strong, b) {
+  color: rgb(15 23 42);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown :where(code):not(pre code) {
+  background: rgb(226 232 240 / 0.9);
+  border: 1px solid rgb(148 163 184 / 0.28);
+  border-radius: 0.375rem;
+  color: rgb(30 41 59);
+  font-weight: 600;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown div[data-streamdown='code-block'] {
+  border-color: rgb(148 163 184 / 0.22);
+  box-shadow: 0 12px 24px rgb(15 23 42 / 0.16);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown div[data-streamdown='code-block-body'],
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown div[data-streamdown='code-block-body'] pre {
+  background: rgb(15 23 42) !important;
+  color: rgb(248 250 252) !important;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-light-card-markdown div[data-streamdown='code-block-body'] code,
+[data-pbl-workspace='true']
+  .pbl-v2-light-card-markdown
+  div[data-streamdown='code-block-body']
+  span {
+  color: rgb(248 250 252) !important;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-task-review-markdown :where(code):not(pre code) {
+  background: rgb(255 255 255 / 0.34);
+  border: 1px solid rgb(165 180 252 / 0.34);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    0 6px 14px rgb(51 65 85 / 0.1);
+  color: rgb(36 50 76);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-task-review-markdown :where(li)::marker {
+  color: rgb(99 102 241 / 0.65);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-instructor-bubble {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(147 197 253 / 0.2);
+  background:
+    radial-gradient(circle at 8% 0%, rgb(157 140 255 / 0.16), transparent 34%),
+    radial-gradient(circle at 96% 15%, rgb(34 211 238 / 0.1), transparent 30%),
+    linear-gradient(145deg, rgb(22 35 62 / 0.78), rgb(17 31 56 / 0.72) 58%, rgb(15 28 50 / 0.8));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    inset 0 0 0 1px rgb(255 255 255 / 0.025),
+    0 18px 42px rgb(3 10 26 / 0.32),
+    0 0 34px rgb(96 165 250 / 0.08);
+  backdrop-filter: blur(18px);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-instructor-bubble::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(165 180 252 / 0.55),
+    rgb(103 232 249 / 0.34),
+    transparent
+  );
+}
+
+[data-pbl-workspace='true'] .pbl-v2-instructor-bubble::after {
+  content: '';
+  position: absolute;
+  right: -48px;
+  top: -48px;
+  height: 120px;
+  width: 120px;
+  border-radius: 999px;
+  background: rgb(125 211 252 / 0.08);
+  filter: blur(20px);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-instructor-bubble > * {
+  position: relative;
+  z-index: 1;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-instructor-label {
+  color: rgb(165 180 252 / 0.82);
+  letter-spacing: 0.04em;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-task-review-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(199 210 254 / 0.55);
+  background:
+    radial-gradient(circle at 12% 0%, rgb(167 139 250 / 0.26), transparent 34%),
+    radial-gradient(circle at 92% 12%, rgb(103 232 249 / 0.2), transparent 28%),
+    linear-gradient(
+      145deg,
+      rgb(245 243 255 / 0.7),
+      rgb(239 246 255 / 0.5) 54%,
+      rgb(236 254 255 / 0.56)
+    );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.65),
+    0 20px 54px rgb(3 10 26 / 0.3),
+    0 0 0 1px rgb(139 92 246 / 0.12),
+    0 0 42px rgb(99 102 241 / 0.14);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+[data-pbl-workspace='true'] .pbl-v2-task-review-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 0.5), transparent 34%),
+    linear-gradient(90deg, rgb(167 139 250 / 0.72), rgb(103 232 249 / 0.42), transparent) top / 100%
+      1px no-repeat;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-task-review-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+[data-pbl-workspace='true'] .pbl-v2-task-review-card {
+  border: 1px solid rgb(199 210 254 / 0.52);
+  background:
+    linear-gradient(
+      145deg,
+      rgb(255 255 255 / 0.48),
+      rgb(238 242 255 / 0.34),
+      rgb(236 254 255 / 0.3)
+    ),
+    rgb(255 255 255 / 0.2);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.58),
+    0 16px 38px rgb(4 20 28 / 0.14),
+    0 0 30px rgb(129 140 248 / 0.12);
+  backdrop-filter: blur(12px) saturate(1.05);
+}
+
+/* Shimmer sweep for skeleton loading */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Breathing animation for interactive mode button */
+@keyframes interactive-mode-breathe {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+/* PBL v2 — thinking dots pulse (wider swing for visibility on dark bg) */
+@keyframes think-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* Cursor-style "Thinking…" indicator: a bright band sweeps left→right across
+   muted text (gradient clipped to glyphs). Used by the AI sidebar while the
+   agent run streams and nothing has arrived yet. */
+@keyframes ai-thinking-shimmer {
+  0% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -50% 0;
+  }
+}
+.ai-thinking-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--muted-foreground) 0%,
+    var(--muted-foreground) 40%,
+    var(--foreground) 50%,
+    var(--muted-foreground) 60%,
+    var(--muted-foreground) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: ai-thinking-shimmer 1.8s linear infinite;
+}
+
+body:has([data-home-layout='focus'], [data-platform-viewport]) [data-ai-notice] {
+  @apply bottom-4 left-auto right-4 min-h-0 max-w-[calc(100vw-2rem)] rounded-full bg-background/95 leading-4 backdrop-blur;
+}
+
+body:has([data-home-layout='focus'], [data-platform-viewport]) [data-ai-notice] > button {
+  @apply ml-0 size-auto rounded-full p-0.5;
+}
+
+/* Keep the dismissible notice clear of classroom controls while it is visible. */
+body:has([data-ai-notice]) [data-classroom-viewport] {
+  padding-bottom: 3.5rem;
+}
+
+@media (max-width: 639px) {
+  body:has([data-ai-notice]) [data-classroom-viewport] {
+    padding-bottom: 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-thinking-shimmer {
+    animation: none;
+    color: var(--muted-foreground);
+    -webkit-text-fill-color: var(--muted-foreground);
+  }
+}

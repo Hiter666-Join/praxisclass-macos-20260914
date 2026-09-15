@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  // `exclude` replaces the inherited list; keep shared entries in sync with tsconfig.json.
+  "exclude": [
+    "node_modules",
+    "dist",
+    "packages/*/src",
+    "openclaw",
+    "e2e",
+    "render-service",
+    "tests",
+    "eval",
+    "packages/@praxis/*/test"
+  ]
+}

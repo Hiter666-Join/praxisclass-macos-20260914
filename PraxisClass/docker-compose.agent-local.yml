@@ -1,0 +1,7 @@
+# Local Node development: expose only the project's PostgreSQL on loopback.
+# Reuses the PostgreSQL image already installed on the development machine.
+services:
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - '127.0.0.1:5433:5432'

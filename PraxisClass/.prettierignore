@@ -1,0 +1,27 @@
+# Dependencies & lock files
+pnpm-lock.yaml
+node_modules/
+
+# Vendor packages
+packages/pptxgenjs/
+
+# @praxis workspace packages: the source is formatted to the root style, but skip
+# generated build output and the vendored legacy reference under the importer.
+packages/@praxis/*/dist/
+packages/@praxis/importer/src1/
+
+# Build output
+.next/
+out/
+
+# Generated files
+*.min.js
+*.min.css
+
+# Markdown & YAML
+*.md
+*.yml
+*.yaml
+
+# SVG arc helper (vendored declaration)
+lib/export/svg-arc-to-cubic-bezier.d.ts

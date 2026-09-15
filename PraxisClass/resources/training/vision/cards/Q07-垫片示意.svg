@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="330" viewBox="0 0 360 330" role="img" aria-label="Q07，缺口示意，手工分数0.68"><title>Q07教学图卡，非真实检测结果</title><g data-sample-id="Q07" data-label="defect" data-score-units="68" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+<rect x="1" y="1" width="358" height="328" rx="14" fill="#FFFFFF" stroke="#CAD3D1" stroke-width="2"/>
+<text x="22" y="35" fill="#173B38" font-size="24" font-weight="700">Q07</text>
+<text x="336" y="30" text-anchor="end" fill="#536864" font-size="14">手工示意分数</text>
+<text x="336" y="65" text-anchor="end" fill="#173B38" font-size="30" font-weight="700">0.68</text>
+<rect x="22" y="73" width="316" height="170" rx="10" fill="#F7F7F2"/>
+<path d="M255 158 A75 75 0 1 0 105 158 A75 75 0 1 0 255 158 M210 158 A30 30 0 1 0 150 158 A30 30 0 1 0 210 158" fill="#B7C2C5" fill-rule="evenodd" stroke="#5E7175" stroke-width="2"/>
+<circle cx="180" cy="158" r="65" fill="none" stroke="#DBE1E1" stroke-width="2"/>
+<path d="M232 104 L217 137 L248 132" fill="#F7F7F2" stroke="#B24334" stroke-width="3"/>
+<text x="180" y="248" text-anchor="middle" fill="#526660" font-size="12">缺口示意</text>
+<text x="22" y="274" fill="#A43D30" font-size="20" font-weight="700">已知教学标签：缺陷</text>
+<text x="22" y="302" fill="#596D66" font-size="14">AI辅助自制示意；标签与分数手工设定</text>
+<text x="22" y="320" fill="#596D66" font-size="12">外观不决定分数，不表示真实模型性能</text>
+</g></svg>

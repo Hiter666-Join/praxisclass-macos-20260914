@@ -1,0 +1,13 @@
+/**
+ * GENERATED FILE — do not edit by hand.
+ * Source of truth: fonts.config.mjs (run `pnpm run genfonts` to regenerate).
+ *
+ * Self-hosted Chinese faces for slides imported from PPTX. The importer passes
+ * original font-family names through unchanged; a name renders here only if it
+ * matches one of these families.
+ *
+ * Consumers import this once at the app shell:
+ *     import '@praxis/renderer/fonts.css';
+ *
+ * 未配置 RENDERER_FONT_BASE_URL 时不声明任何 @font-face，导入的 PPTX 中这些字体回退系统字体。
+ */

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>笃行智课 · 有序数据检索实训</title>
+<style>
+:root{color-scheme:light;--paper:#f7f1e6;--ink:#2a2622;--purple:#722ed1;--line:#e4dacb}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,sans-serif}main{max-width:1160px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}h2{font-size:18px;margin:0 0 12px}p{margin:0 0 12px}.eyebrow{font-size:12px;letter-spacing:.1em;color:var(--purple)}.muted{color:#6d655e;font-size:13px}.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;margin-top:24px}section{min-width:0}textarea{width:100%;min-height:290px;resize:vertical;background:#fbf7ee;border:1px solid var(--line);border-radius:8px;padding:16px;color:var(--ink);font:14px/1.65 ui-monospace,Consolas,monospace;tab-size:4}button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#fbf7ee;border-radius:7px;padding:8px 14px;color:var(--ink)}button.primary{background:var(--purple);border-color:var(--purple);color:#faf7ff}button:disabled{cursor:wait;opacity:.5}button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid #a779e9;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cells{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}.cell{min-width:40px;text-align:center;padding:8px;background:#e9e1d5;border-radius:6px}.cell small{display:block;font-size:11px}.cell.active{background:#e6d6fa;outline:2px solid var(--purple)}.cell.excluded{opacity:.35}.sample{border-block:1px solid var(--line);padding:20px 0;margin-top:24px}.results{list-style:none;padding:0;margin:8px 0}.results li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}.pass{color:#246646}.fail{color:#a33730}a{color:var(--purple)}code{font-family:ui-monospace,monospace}.hint{white-space:pre-line;min-height:3em}footer{border-top:1px solid var(--line);margin-top:24px;padding-top:12px}@media(max-width:650px){main{padding:18px}.layout{grid-template-columns:1fr}h1{font-size:23px}textarea{min-height:250px}}
+</style>
+</head>
+<body><main>
+<header><p class="eyebrow">PRAXISCLASS / 算法实训 A</p><h1>为有序数据实现可靠检索</h1><p>完成 <code>solution(nums, target)</code>：返回目标值首次出现的下标；不存在时返回 <code>-1</code>。</p><p class="muted">输入为升序整数列表，允许空列表与重复值。先分析边界，再实现二分检索，最后提交测试。</p></header>
+<div class="layout">
+<section aria-labelledby="editor-title"><h2 id="editor-title">01 · 实现检索函数</h2>
+<label class="muted" for="code-input">Python 代码（在浏览器独立工作线程执行）</label>
+<textarea id="code-input" spellcheck="false">def solution(nums, target):
+    # 返回 target 第一次出现的位置，不存在则返回 -1
+    # 提示：维护半开区间 [left, right)
+    return -1
+</textarea>
+<div class="actions"><button id="submit" class="primary" disabled>准备 Python 环境…</button><button id="hint">提示 L1</button><button id="retry" hidden>重试加载</button></div>
+<p id="hint-text" class="muted hint" aria-live="polite">L0：尝试说明空列表、重复值、目标不在列表中时应该返回什么。</p>
+<p id="runtime-status" role="status">首次加载需要下载 Pyodide。加载失败不会产生测试成绩。</p>
+</section>
+<section aria-labelledby="results-title"><h2 id="results-title">02 · 用冻结用例检验</h2><p class="muted">测试集 A-20260905-01，12 例。公开示例与隐藏用例使用同一判分规则：返回值完全一致才通过。</p>
+<p>公开示例：<code>[1, 3, 3, 5, 8], target=3 → 1</code></p><p id="summary" role="status">尚未提交，不预填通过率。</p><ul id="results" class="results" aria-label="逐条测试结果"></ul>
+<div class="sample"><h2>03 · 观察区间如何缩小</h2><p class="muted">以下是参考算法对公开示例的演示，与提交代码的执行结果分开。</p><div id="cells" class="cells"></div><p id="trace" aria-live="polite"></p><div class="actions"><button id="step">下一步</button><button id="reset-trace">重置演示</button></div></div>
+</section></div>
+<footer class="muted">本练习由 AI 辅助制作，供教学验证。隐藏用例在界面中隐藏，不承担考试防作弊功能。<br>知识参考：<a href="https://docs.python.org/3/library/bisect.html" target="_blank" rel="noopener noreferrer">Python bisect 文档</a>。正确性由本页冻结用例验证；复杂度分析由教师检查。<br><span id="delivery">导入平台课堂后，提交结果将自动汇入学习看板；单独打开此文件不会上传。</span></footer>
+<script id="frozen-cases" type="application/json">
+[
+{"id":"public-duplicates","nums":[1,3,3,5,8],"target":3,"expected":1,"hidden":false},
+{"id":"public-missing","nums":[1,4,7],"target":6,"expected":-1,"hidden":false},
+{"id":"empty","nums":[],"target":1,"expected":-1,"hidden":true},
+{"id":"singleton-hit","nums":[4],"target":4,"expected":0,"hidden":true},
+{"id":"singleton-miss","nums":[4],"target":3,"expected":-1,"hidden":true},
+{"id":"first","nums":[2,4,6,8],"target":2,"expected":0,"hidden":true},
+{"id":"last","nums":[2,4,6,8],"target":8,"expected":3,"hidden":true},
+{"id":"below","nums":[2,4,6,8],"target":0,"expected":-1,"hidden":true},
+{"id":"above","nums":[2,4,6,8],"target":9,"expected":-1,"hidden":true},
+{"id":"all-equal","nums":[5,5,5,5],"target":5,"expected":0,"hidden":true},
+{"id":"negative","nums":[-8,-3,-3,0,2],"target":-3,"expected":1,"hidden":true},
+{"id":"zero","nums":[-2,0,0,0,4],"target":0,"expected":1,"hidden":true}
+]
+</script>
+<script>
+const cases = JSON.parse(document.getElementById('frozen-cases').textContent);
+const submit = document.getElementById('submit');
+const status = document.getElementById('runtime-status');
+const retry = document.getElementById('retry');
+let worker, loadingTimer, executionTimer, activeAttempt;
+const pythonHarness = `
+import json, time, io, contextlib
+cases_to_run = json.loads(frozen_cases_json)
+namespace = {}
+results = []
+source_error = False
+try:
+    with contextlib.redirect_stdout(io.StringIO()):
+        exec(compile(student_source, '<student>', 'exec'), namespace)
+except BaseException:
+    source_error = True
+for case in cases_to_run:
+    started = time.perf_counter()
+    passed = False
+    reason = 'runtime_error' if source_error else 'wrong_answer'
+    try:
+        if not source_error:
+            with contextlib.redirect_stdout(io.StringIO()):
+                actual = namespace['solution'](case['nums'][:], case['target'])
+            passed = type(actual) is int and actual == case['expected']
+    except BaseException:
+        reason = 'runtime_error'
+    results.append({'caseId':case['id'], 'passed':passed, 'durationMs':round((time.perf_counter()-started)*1000), 'failureReason':None if passed else reason})
+json.dumps(results)
+`;
+function pythonWorker() {
+  self.onmessage = async ({data}) => {
+    if (data.type === 'init') {
+      try {
+        importScripts('https://cdn.jsdelivr.net/pyodide/v0.29.2/full/pyodide.js');
+        self.py = await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.29.2/full/'});
+        self.postMessage({type:'ready'});
+      } catch { self.postMessage({type:'load-error'}); }
+      return;
+    }
+    try {
+      self.py.globals.set('student_source', data.code);
+      self.py.globals.set('frozen_cases_json', JSON.stringify(data.cases));
+      const result = await self.py.runPythonAsync(data.harness);
+      self.postMessage({type:'results', attemptId:data.attemptId, results:JSON.parse(result)});
+    } catch { self.postMessage({type:'execution-error', attemptId:data.attemptId}); }
+  };
+}
+function failedResults(reason) { return cases.map(item => ({caseId:item.id, passed:false, durationMs:0, failureReason:reason})); }
+function finish(results, attemptId) {
+  if (activeAttempt !== attemptId) return;
+  clearTimeout(executionTimer);
+  activeAttempt = null;
+  submit.disabled = false; submit.textContent = '提交并运行测试';
+  const passed = results.filter(item => item.passed).length;
+  document.getElementById('summary').textContent = passed + ' / ' + results.length + ' 通过（' + Math.round(passed/results.length*100) + '%）';
+  document.getElementById('results').replaceChildren(...results.map(item => {
+    const li = document.createElement('li'); const name = document.createElement('span'); const result = document.createElement('strong');
+    name.textContent = item.caseId + (cases.find(c=>c.id===item.caseId).hidden ? ' · 隐藏' : ' · 公开');
+    result.textContent = item.passed ? '通过' : item.failureReason === 'timeout' ? '超时' : item.failureReason === 'runtime_error' ? '运行错误' : '未通过';
+    result.className = item.passed ? 'pass' : 'fail'; li.append(name,result); return li;
+  }));
+  status.textContent = '本轮测试完成，可以修改代码再次提交。';
+  if (window.parent !== window) {
+    window.parent.postMessage({type:'praxis:code-test-results',version:1,suite:'case_a_algo',attemptId,
+      results:results.map(row=>({...row,failureReason:row.failureReason || undefined}))}, '*');
+    document.getElementById('delivery').textContent = '本轮实际结果已发送给课堂平台；可在学习看板核对入库情况。';
+  }
+}
+function loadRuntime() {
+  clearTimeout(loadingTimer); clearTimeout(executionTimer); worker?.terminate();
+  submit.disabled = true; submit.textContent = '准备 Python 环境…'; retry.hidden = true;
+  const url = URL.createObjectURL(new Blob(['('+pythonWorker.toString()+')()'],{type:'text/javascript'}));
+  worker = new Worker(url); URL.revokeObjectURL(url);
+  const unavailable = () => {clearTimeout(loadingTimer);worker.terminate();retry.hidden=false;status.textContent='Python 环境加载失败，请检查网络后重试。没有记录成绩。';};
+  worker.onerror = unavailable;
+  worker.onmessage = ({data}) => {
+    if (data.type === 'ready') {clearTimeout(loadingTimer);submit.disabled=false;submit.textContent='提交并运行测试';status.textContent='Python 已就绪。代码在浏览器中执行。';}
+    else if (data.type === 'load-error') unavailable();
+    else if (data.type === 'results') finish(data.results,data.attemptId);
+    else if (data.type === 'execution-error') finish(failedResults('runtime_error'),data.attemptId);
+  };
+  loadingTimer = setTimeout(unavailable, 45000); worker.postMessage({type:'init'});
+}
+submit.onclick = () => {
+  if (submit.disabled) return;
+  activeAttempt = crypto.randomUUID(); const attemptId = activeAttempt;
+  submit.disabled=true; submit.textContent='正在运行…'; status.textContent='正在执行 12 条冻结用例，最长 8 秒。';
+  document.getElementById('summary').textContent='本轮正在测试…';
+  document.getElementById('results').replaceChildren();
+  executionTimer = setTimeout(() => {worker.terminate();finish(failedResults('timeout'),attemptId);submit.disabled=true;retry.hidden=false;status.textContent='执行超过 8 秒，已停止工作线程。修改代码后重新加载环境。';},8000);
+  worker.postMessage({code:document.getElementById('code-input').value,cases,harness:pythonHarness,attemptId});
+};
+retry.onclick=loadRuntime;
+let hintLevel=0;
+const hints=['L1：令 left=0，right=len(nums)。当 nums[mid] 小于目标时，目标只可能在 mid 右侧。','L2：当 nums[mid] 大于或等于目标时，令 right=mid，保留继续寻找第一次出现的位置的机会。循环结束后检查下标是否越界、值是否等于目标。'];
+document.getElementById('hint').onclick=()=>{document.getElementById('hint-text').textContent=hints[Math.min(hintLevel++,1)];document.getElementById('hint').textContent=hintLevel>1?'已显示全部提示':'提示 L2';};
+const sample=[1,3,3,5,8];let left=0,right=sample.length;
+function showTrace(){const mid=left<right?Math.floor((left+right)/2):-1;document.getElementById('cells').replaceChildren(...sample.map((value,index)=>{const cell=document.createElement('div');cell.className='cell'+(index<left||index>=right?' excluded':'')+(index===mid?' active':'');cell.textContent=value;const label=document.createElement('small');label.textContent='下标 '+index;cell.append(label);return cell;}));document.getElementById('trace').textContent=mid<0?'区间收敛到下标 '+left+'。检查值为 3，返回 '+left+'。':'当前区间 ['+left+', '+right+')，中点 '+mid+'，值 '+sample[mid]+'。';document.getElementById('step').disabled=mid<0;}
+document.getElementById('step').onclick=()=>{const mid=Math.floor((left+right)/2);if(sample[mid]<3)left=mid+1;else right=mid;showTrace();};
+document.getElementById('reset-trace').onclick=()=>{left=0;right=sample.length;showTrace();};
+window.addEventListener('message',({source,data})=>{if(source!==window.parent)return;if(data?.type==='SET_WIDGET_STATE'&&typeof data.state?.code==='string')document.getElementById('code-input').value=data.state.code;});
+showTrace();loadRuntime();
+</script></main></body></html>

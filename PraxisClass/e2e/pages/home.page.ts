@@ -1,0 +1,31 @@
+import type { Page, Locator } from '@playwright/test';
+
+export class HomePage {
+  readonly page: Page;
+  readonly logo: Locator;
+  readonly textarea: Locator;
+  readonly enterButton: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+    // Mirrors DEFAULT_BRAND.productName in lib/brand/brand-config.ts, which the
+    // home hero renders as the logo's alt text.
+    this.logo = page.locator('img[alt="笃行智课 · PraxisClass"]');
+    this.textarea = page.locator('textarea');
+    this.enterButton = page
+      .getByRole('button', { name: /enter/i })
+      .or(page.locator('button:has-text("进入课堂")'));
+  }
+
+  async goto() {
+    await this.page.goto('/');
+  }
+
+  async fillRequirement(text: string) {
+    await this.textarea.fill(text);
+  }
+
+  async submit() {
+    await this.enterButton.click();
+  }
+}
